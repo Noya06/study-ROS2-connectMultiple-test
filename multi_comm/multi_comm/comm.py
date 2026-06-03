@@ -1,37 +1,30 @@
-"""Compatibility wrapper.
-
-Unified implementation lives in `multi_comm.listener`.
-"""
-
-from multi_comm.listener import main
-
-
-if __name__ == '__main__':
-    main()
-
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import String
 
 
-class MinimalTalker(Node):
+class MinimalCommNode(Node):
     def __init__(self):
-        super().__init__('minimal_talker')
+        super().__init__('minimal_comm_node')
         self.pub = self.create_publisher(String, 'chatter', 10)
+        self.sub = self.create_subscription(String, 'chatter', self.callback, 10)
         self.timer = self.create_timer(1.0, self.timer_callback)
         self.count = 0
 
     def timer_callback(self):
         msg = String()
-        msg.data = f'Hello {self.count}'
+        msg.data = f'Hello {self.count} from {self.get_name()}'
         self.pub.publish(msg)
         self.get_logger().info(f'Publishing: "{msg.data}"')
         self.count += 1
 
+    def callback(self, msg):
+        self.get_logger().info(f'Received: "{msg.data}"')
+
 
 def main(args=None):
     rclpy.init(args=args)
-    node = MinimalTalker()
+    node = MinimalCommNode()
     try:
         rclpy.spin(node)
     except KeyboardInterrupt:

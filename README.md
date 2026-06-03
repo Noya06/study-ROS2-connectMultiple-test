@@ -9,8 +9,8 @@
 
 ## ファイル構成
 - `multi_comm/` - パッケージ本体
-	- `multi_comm/talker.py` - 単純なパブリッシャ（`chatter`）
-	- `multi_comm/listener.py` - 単純なサブスクライバ（`chatter`）
+	- `multi_comm/comm.py` - パブリッシュ/サブスクライブ一体型ノード（`chatter`）
+	- `multi_comm/listener.py`, `multi_comm/talker.py` - 互換ラッパー
 	- `package.xml`, `setup.py`, `setup.cfg`, `resource/multi_comm`
 
 ## 必要環境
@@ -29,14 +29,14 @@ source install/setup.bash
 ノード実行例:
 
 ```bash
-# パブリッシャ（PC A）
-ros2 run multi_comm talker
+# PC A
+ros2 run multi_comm comm
 
-# サブスクライバ（PC B）
-ros2 run multi_comm listener
+# PC B
+ros2 run multi_comm comm
 ```
 
-同一ネットワーク内であれば、`talker`が送る`chatter`メッセージを別のPC上の`listener`が受信します。
+同一ネットワーク内であれば、各PCの`comm`ノードが`chatter`を送受信します。
 
 ## マルチPCでの接続手順（要点）
 1. 各マシンでROS2 Humbleをインストール・セットアップする。
@@ -60,7 +60,7 @@ PC A:
 export ROS_DOMAIN_ID=0
 source /opt/ros/humble/setup.bash
 source install/setup.bash
-ros2 run multi_comm talker
+ros2 run multi_comm comm
 ```
 
 PC B:
@@ -68,7 +68,7 @@ PC B:
 export ROS_DOMAIN_ID=0
 source /opt/ros/humble/setup.bash
 source install/setup.bash
-ros2 run multi_comm listener
+ros2 run multi_comm comm
 ```
 
 以上が最小構成の説明です。必要ならCyclone DDSの設定例やSystemdでのサービス化スクリプトも追加できます。
