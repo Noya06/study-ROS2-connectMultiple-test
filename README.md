@@ -10,7 +10,6 @@
 ## ファイル構成
 - `multi_comm/` - パッケージ本体
 	- `multi_comm/comm.py` - パブリッシュ/サブスクライブ一体型ノード（`chatter`）
-	- `multi_comm/listener.py`, `multi_comm/talker.py` - 互換ラッパー
 	- `package.xml`, `setup.py`, `setup.cfg`, `resource/multi_comm`
 
 ## 必要環境

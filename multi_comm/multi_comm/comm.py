@@ -3,9 +3,9 @@ from rclpy.node import Node
 from std_msgs.msg import String
 
 
-class MinimalCommNode(Node):
+class CommNode(Node):
     def __init__(self):
-        super().__init__('minimal_comm_node')
+        super().__init__('comm_node')
         self.pub = self.create_publisher(String, 'chatter', 10)
         self.sub = self.create_subscription(String, 'chatter', self.callback, 10)
         self.timer = self.create_timer(1.0, self.timer_callback)
@@ -24,7 +24,7 @@ class MinimalCommNode(Node):
 
 def main(args=None):
     rclpy.init(args=args)
-    node = MinimalCommNode()
+    node = CommNode()
     try:
         rclpy.spin(node)
     except KeyboardInterrupt:
